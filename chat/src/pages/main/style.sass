@@ -1,0 +1,324 @@
+.main-page-wrapper
+	width: 100%
+	height: 100vh
+	display: grid
+	grid-template-columns: 100px 400px 1fr
+	grid-template-rows: 75px 1fr 1fr
+	grid-template-areas: "aside nav nav" "aside chats chat" "aside chats chat"
+
+	aside
+		grid-area: aside
+		background-color: #374349
+		display: flex
+		flex-direction: column
+		justify-content: space-between
+
+		.top-container
+			display: flex
+			flex-direction: column
+			gap: 10px
+
+			nav
+				display: flex
+				flex-direction: column
+
+				.nav-item
+					display: flex
+					flex-direction: column
+					align-items: center
+					padding: 16px 0
+					gap: 5px
+					cursor: pointer
+					transition: 0.3s ease
+
+					&:hover
+						background: #737A80
+
+					&.selected
+						background: #737A80
+
+					svg
+						width: 24px
+						height: 24px
+						filter: invert(100%)
+
+					span
+						color: #D3D3D3
+
+		.bottom-container
+			.tech-support-container
+				width: 100%
+				display: flex
+				justify-content: center
+				align-items: center
+				padding: 12px 0
+				cursor: pointer
+
+				&:hover
+					svg
+						filter: invert(75%)
+
+				svg
+					width: 28px
+					height: 28px
+					filter: invert(50%)
+					transition: 0.3s ease
+
+
+	header
+		grid-area: nav
+		background: #F7F7F7
+		display: flex
+		align-items: center
+		padding: 0 16px
+		gap: 10px
+		border: 1px solid #E5E5E5
+
+		.back-icon
+			color: #657278
+
+		.search-bar
+			display: flex
+			align-items: center
+			gap: 5px
+			flex: 1
+
+			input
+				outline: none
+				border: none
+				background: transparent
+				font-size: 18px
+				color: #858E95
+				width: 100%
+
+				&::placeholder
+					color: #D3D3D3
+
+			svg
+				fill: #D3D3D3
+				width: 28px
+				height: 28px
+
+		.right-panel
+			display: flex
+			align-items: center
+
+			.slash
+				width: 2px
+				height: 40px
+				border-radius: 5px
+				background: #E5E5E5
+				margin: 0 10px
+
+			.item
+				height: 100%
+				display: flex
+				flex-direction: column
+				align-items: center
+				cursor: pointer
+				transition: 0.2s
+				padding: 12px
+
+				&:hover
+					opacity: 0.7
+
+				span
+					font-size: 16px
+					color: #858E95
+
+				svg
+					width: 24px
+					height: 24px
+					color: #717C82
+
+
+	.chats-container
+		grid-area: chats
+		border: 1px solid #E5E5E5
+		border-top: none
+		display: flex
+		flex-direction: column
+
+		.top-panel
+			border-bottom: 2px solid #EEEEEE
+			background: #F7F7F7
+
+			.list
+				width: 100%
+				display: flex
+				justify-content: flex-start
+				list-style-type: none
+				gap: 16px
+				padding: 12px
+
+				li
+					color: #99A2A7
+					cursor: pointer
+					transition: 0.3s
+
+					&:hover
+						color: #000
+
+					&.selected
+						color: #000
+						border-bottom: 3px solid #000
+
+		.bottom-panel
+			width: 100%
+			background: #F7F7F7
+			display: flex
+			flex-direction: column
+			border-bottom: 1px solid #E5E5E5
+
+			.chat-item
+				width: 100%
+				display: flex
+				padding: 12px
+				gap: 10px
+				cursor: pointer
+
+				.left-container
+					height: 100%
+					display: flex
+					align-items: center
+
+					.chat-image
+						width: 48px
+						height: 48px
+
+				.right-container
+					display: flex
+					flex-direction: column
+					width: 100%
+					gap: 2px
+
+					.top-container
+						display: flex
+						align-items: center
+						justify-content: space-between
+
+						.chat-title
+							font-size: 18px
+							
+						.message-info
+							display: flex
+							align-items: center
+							gap: 4px
+
+							svg
+								fill: #1E88FF
+
+							span
+								color: #889BA9
+
+					.bottom-container
+						.message
+							color: #99A2A7
+							.author
+								color: #000
+
+	.chat
+		grid-area: chat
+		background: #F7F7F7
+		display: flex
+		flex-direction: column
+
+		.top-panel
+			width: 100%
+			display: flex
+			justify-content: space-between
+			align-items: center
+			background: #fff
+			border-bottom: 2px solid #E5E5E5
+			padding: 20px 25px
+
+			.left-container
+				display: flex
+				gap: 10px
+				align-items: center
+
+				h3
+					font-size: 18px
+
+			.right-container
+				svg
+					fill: #717C82
+					cursor: pointer
+
+		.center-panel
+			display: flex
+			flex: 1
+			background: #fff
+			flex-direction: column
+			padding: 20px
+			gap: 30px
+			overflow-y: auto
+
+			.self-message
+				display: flex
+				width: 100%
+				justify-content: flex-end
+
+				.message
+					display: flex
+					background: #CCE4FF
+					padding: 12px
+					border-radius: 20px 20px 0 20px
+					gap: 15px
+
+					.message-content
+						max-width: 400px
+
+					.message-send-time
+						display: flex
+						align-items: flex-end
+						color: #889BA9
+
+			.message-container
+				display: flex
+				gap: 10px
+
+				.avatar-container
+					display: flex
+					height: 100%
+					align-items: flex-start
+
+				.message-body
+					display: flex
+					flex-direction: column
+					align-items: flex-start
+					gap: 10px
+
+					.username
+						font-size: 18px
+						font-weight: bold
+
+					.message
+						display: flex
+						background: #EFF0F2
+						padding: 12px
+						gap: 25px
+						border-radius: 0 20px 20px 20px
+
+						.message-content
+							font-size: 16px
+
+						.message-send-time
+							color: #808B91
+
+		.bottom-panel
+			background: #fff
+			border-top: 2px solid #E5E5E5
+			display: flex
+			padding: 12px
+			gap: 10px
+
+			.message-input
+				outline: none
+				border: none
+				display: flex
+				flex: 1
+				color: #858E95
+
+				&::placeholder
+					color: #BBC0C4
