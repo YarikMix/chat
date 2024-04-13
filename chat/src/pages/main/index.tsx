@@ -14,74 +14,22 @@ import {HiOutlineChat} from "react-icons/hi";
 import {RiUnpinLine} from "react-icons/ri";
 import {IconButton} from "@mui/material";
 import ReactIcon from "/src/assets/react.svg"
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import KeyboardVoiceOutlinedIcon from '@mui/icons-material/KeyboardVoiceOutlined';
-import {FaRegSmile} from "react-icons/fa";
-import Avatar from "../../components/Avatar/Avatar.tsx";
 import {useAuth} from "../../hooks/useAuth.ts";
 import {useNavigate} from "react-router-dom";
 import UserProfile from "../../components/UserProfile/UserProfile.tsx";
-import {useChat} from "../../hooks/useChat.ts";
-import moment from "moment";
-import {MessageType} from "../../store/chatSlice.ts";
-import {useEffect, useRef, useState} from "react";
-import useWebSocket from "react-use-websocket";
-
+import {useEffect} from "react";
+import Chat from "../../components/Chat/Chat.tsx";
 
 function MainPage() {
-    const {is_authenticated, username} = useAuth()
-
-    const {messages, newMessage} = useChat()
+    const {is_authenticated} = useAuth()
 
     const navigate = useNavigate()
-
-    const messagesEndRef = useRef<null | HTMLDivElement>(null)
-
-    const [message, setMessage] = useState("")
 
     useEffect(() => {
         if (!is_authenticated) {
             navigate("/")
         }
-
     }, []);
-
-    const { sendMessage } = useWebSocket("ws://localhost:8000/ws/socket-server/", {
-        onMessage: (message) => {
-            console.log("onMessage");
-            console.log(message)
-            console.log(message.data)
-            console.log(JSON.parse(message.data))
-        },
-        onOpen: () => {
-            console.log("websocket connection open")
-        }
-    });
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        if (!message) {
-            return
-        }
-
-        newMessage(message)
-        setMessage("")
-
-
-        sendMessage(JSON.stringify({
-            "user": username,
-            "time": new Date().toString(),
-            "message": message
-        }))
-
-
-        setTimeout(() => scrollToBottom(), 100)
-    }
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.lastElementChild?.scrollIntoView()
-    }
 
     return (
         <div className="main-page-wrapper">
@@ -190,56 +138,7 @@ function MainPage() {
                     </div>
                 </div>
             </div>
-            <div className="chat">
-                <div className="top-panel">
-                    <div className="left-container">
-                        <img src={ReactIcon} alt="" className="chat-avatar" />
-                        <h3>Онлайн чат</h3>
-                    </div>
-                    <div className="right-container">
-                        <IconButton>
-                            <SearchOutlinedIcon />
-                        </IconButton>
-                    </div>
-                </div>
-                <div className="center-panel" ref={messagesEndRef}>
-                    {messages.map((message: MessageType) => (
-                        message.self ?
-                            <div className="self-message" key={message.id}>
-                                <div className="message">
-                                    <span className="message-content">{message.content}</span>
-                                    <span className="message-send-time">{moment(message.time).format('HH:mm')}</span>
-                                </div>
-                            </div>
-                            :
-                            <div className="message-container" key={message.id}>
-                                <div className="avatar-container">
-                                    <Avatar username={message.user}/>
-                                </div>
-                                <div className="message-body">
-                                    <span className="username">{message.user}</span>
-                                    <div className="message">
-                                        <span className="message-content">{message.content}</span>
-                                        <span
-                                            className="message-send-time">{moment(message.time).format('HH:mm')}</span>
-                                    </div>
-                                </div>
-                            </div>
-                    ))}
-                </div>
-                <form className="bottom-panel" onSubmit={handleSubmit}>
-                    <IconButton>
-                        <AttachFileIcon/>
-                    </IconButton>
-                    <input type="text" className="message-input" placeholder="Написать сообщение" value={message} onChange={e => setMessage(e.target.value)}/>
-                    <IconButton>
-                        <FaRegSmile/>
-                    </IconButton>
-                    <IconButton>
-                        <KeyboardVoiceOutlinedIcon/>
-                    </IconButton>
-                </form>
-            </div>
+            <Chat />
         </div>
     )
 }

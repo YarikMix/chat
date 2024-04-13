@@ -3,6 +3,12 @@ import {addMessage} from "../store/chatSlice.ts";
 import {useAuth} from "./useAuth.ts";
 import {createUUID} from "../utils/utils.ts";
 
+type ChatMessage = {
+    user: string,
+    message: string,
+    time: string
+}
+
 export function useChat() {
     // @ts-ignore
     const {messages} = useSelector(state => state.chat)
@@ -11,19 +17,23 @@ export function useChat() {
 
     const dispatch = useDispatch()
 
-    const newMessage = (message:string) => {
-        console.log({
-            self: true,
-            user: username,
+    const newMessage = (data:ChatMessage) => {
+        console.log("newMessage")
+
+        const message = {
+            self: data.user == username,
+            user: data.user,
             time: new Date().toString(),
-            content: message
-        })
+            content: data.message
+        }
+
+        console.log(message)
 
         dispatch(addMessage({
-            self: true,
-            user: username,
+            self: data.user == username,
+            user: data.user,
             time: new Date().toString(),
-            content: message,
+            content: data.message,
             id: createUUID()
         }))
     }
