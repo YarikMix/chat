@@ -1,0 +1,143 @@
+.chat
+	grid-area: chat
+	background: #F7F7F7
+	display: flex
+	flex-direction: column
+
+	.top-panel
+		width: 100%
+		display: flex
+		justify-content: space-between
+		align-items: center
+		background: #fff
+		border-bottom: 2px solid #E5E5E5
+		padding: 20px 25px
+
+		.left-container
+			display: flex
+			gap: 10px
+			align-items: center
+
+			h3
+				font-size: 18px
+
+		.right-container
+			svg
+				fill: #717C82
+				cursor: pointer
+
+	.center-panel
+		display: flex
+		flex: 1
+		background: #fff
+		flex-direction: column
+		padding: 20px
+		gap: 30px
+		overflow-y: auto
+
+		.self-message
+			display: flex
+			width: 100%
+			justify-content: flex-end
+
+			.message
+				display: flex
+				background: #CCE4FF
+				padding: 12px
+				border-radius: 20px 20px 0 20px
+				gap: 15px
+				position: relative
+
+				.error-icon
+					position: absolute
+					left: -35px
+					top: 50%
+					transform: translateY(-50%)
+					font-size: 24px
+					color: red
+
+				&.error
+					background: #ff6666
+
+					.message-content, .message-send-time
+						color: #fff
+
+				.message-content
+					max-width: 400px
+
+				.message-send-time
+					display: flex
+					align-items: flex-end
+					color: #889BA9
+					font-size: 14px
+					position: relative
+					top: 5px
+
+		.message-container
+			display: flex
+			gap: 10px
+
+			.avatar-container
+				display: flex
+				height: 100%
+				align-items: flex-start
+
+			.message-body
+				display: flex
+				flex-direction: column
+				align-items: flex-start
+				gap: 10px
+
+				.username
+					font-size: 18px
+					font-weight: bold
+
+				.error-icon
+					position: absolute
+					right: -35px
+					top: 50%
+					transform: translateY(-50%)
+					font-size: 24px
+					color: red
+
+				.message
+					display: flex
+					background: #EFF0F2
+					padding: 12px
+					gap: 25px
+					border-radius: 0 20px 20px 20px
+					position: relative
+
+					&.error
+						background: #ff6666
+
+						.message-content, .message-send-time
+							color: #fff
+
+					.message-content
+						font-size: 16px
+
+					.message-send-time
+						color: #808B91
+						font-size: 14px
+						position: relative
+						top: 5px
+						display: flex
+						align-items: flex-end
+
+	.bottom-panel
+		background: #fff
+		border-top: 2px solid #E5E5E5
+		display: flex
+		padding: 12px
+		gap: 10px
+
+		.message-input
+			outline: none
+			border: none
+			display: flex
+			flex: 1
+			color: #858E95
+
+			&::placeholder
+				color: #BBC0C4

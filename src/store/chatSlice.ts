@@ -5,7 +5,8 @@ export type MessageType = {
     user: string,
     content: string,
     time: string,
-    id: string
+    id: string,
+    error: boolean
 }
 
 type chatStateType = {
@@ -20,35 +21,40 @@ const initialState:chatStateType = {
             self: false,
             user: "Константин Арбузов",
             content: "Всем, привет! А у кого сейчас последняя версия продуктовой презентации?",
-            time: new Date().toString()
+            time: new Date().toString(),
+            error: false
         },
         {
             id: "2",
             self: false,
             user: "Константин Арбузов",
             content: "У нас встреча назначена на 12:30,хотелось бы успеть ознакомиться?",
-            time: new Date().toString()
+            time: new Date().toString(),
+            error: false
         },
         {
             id: "3",
             self: true,
             user: "Ярослав Михалёв",
             content: "Все проверено на моей стороне. Можно отправлять",
-            time: new Date().toString()
+            time: new Date().toString(),
+            error: false
         },
         {
             id: "4",
             self: false,
             user: "Максим Васильев",
-            content: "Коллеги, кто сможет захватить проектор?!",
-            time: new Date().toString()
+            content: "Коллеги, кто сможет захватить проектор?",
+            time: new Date().toString(),
+            error: false
         },
         {
             id: "5",
             self: true,
             user: "Ярослав Михалёв",
             content: "Кстати, насчет оформления промо-стенда прайс-лист от подрядчика",
-            time: new Date().toString()
+            time: new Date().toString(),
+            error: false
         }
     ]
 }
@@ -58,7 +64,6 @@ const chatSlice = createSlice({
     initialState: initialState,
     reducers: {
         addMessage: (state, action) => {
-            // @ts-ignore
             state.messages = [...state.messages, action.payload]
         }
     }

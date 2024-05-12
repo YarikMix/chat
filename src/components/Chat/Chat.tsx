@@ -12,6 +12,8 @@ import {FormEvent, useRef, useState} from "react";
 import useWebSocket from "react-use-websocket";
 import Ajv from "ajv";
 import {useAuth} from "../../hooks/useAuth.ts";
+import {MdError} from "react-icons/md";
+import "./Chat.sass"
 
 const Chat = () => {
     const {username} = useAuth()
@@ -35,20 +37,24 @@ const Chat = () => {
                 const messageSchema = {
                     type: "object",
                     properties: {
-                        user: {
-                            type: "string"
-                        },
                         message: {
                             type: "string"
                         },
-                        time: {
+                        send_time: {
                             type: "string"
                         },
+                        username: {
+                            type: "string"
+                        },
+                        error: {
+                            type: "boolean"
+                        }
                     },
                     required: [
-                        "user",
+                        "username",
                         "message",
-                        "time"
+                        "send_time",
+                        "error"
                     ],
                 };
 
@@ -56,11 +62,10 @@ const Chat = () => {
                 console.log(isDataValid)
                 if (isDataValid) {
                     newMessage(data.data)
+                    setTimeout(() => scrollToBottom(), 100)
                     return
                 }
             }
-
-            console.log("error!")
         },
         onOpen: () => {
             console.log("websocket connection open")
@@ -86,7 +91,11 @@ const Chat = () => {
     }
 
     const scrollToBottom = () => {
+        console.log("scrollToBottom")
+        console.log(messagesEndRef.current?.lastElementChild)
+
         messagesEndRef.current?.lastElementChild?.scrollIntoView()
+
     }
 
     return (
@@ -106,9 +115,10 @@ const Chat = () => {
                 {messages.map((message: MessageType) => (
                     message.self ?
                         <div className="self-message" key={message.id}>
-                            <div className="message">
-                                <span className="message-content">{message.content}</span>
+                            <div className={"message " + (message.error ? "error" : "")}>
+                                <span className="message-content">{message.error ? "Сообщение пришло с ошибкой" : message.content}</span>
                                 <span className="message-send-time">{moment(message.time).format('HH:mm')}</span>
+                                {message.error && <MdError className="error-icon"/> }
                             </div>
                         </div>
                         :
@@ -118,10 +128,10 @@ const Chat = () => {
                             </div>
                             <div className="message-body">
                                 <span className="username">{message.user}</span>
-                                <div className="message">
-                                    <span className="message-content">{message.content}</span>
-                                    <span
-                                        className="message-send-time">{moment(message.time).format('HH:mm')}</span>
+                                <div className={"message " + (message.error ? "error" : "")}>
+                                    <span className="message-content">{message.error ? "Сообщение пришло с ошибкой" : message.content}</span>
+                                    <span className="message-send-time">{moment(message.time).format('HH:mm')}</span>
+                                    {message.error && <MdError className="error-icon" /> }
                                 </div>
                             </div>
                         </div>
