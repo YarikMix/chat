@@ -4,7 +4,6 @@ import {BsChatFill, BsCheckAll} from "react-icons/bs";
 import {LuPhone, LuUsers} from "react-icons/lu";
 import {FaRegUser} from "react-icons/fa6";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {AiOutlineQuestionCircle} from "react-icons/ai";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
@@ -56,10 +55,6 @@ function MainPage() {
                         <div className="nav-item">
                             <CalendarMonthOutlinedIcon/>
                             <span>Календарь</span>
-                        </div>
-                        <div className="nav-item">
-                            <FolderOutlinedIcon/>
-                            <span>Файлы</span>
                         </div>
                         <div className="nav-item">
                             <SettingsOutlinedIcon/>

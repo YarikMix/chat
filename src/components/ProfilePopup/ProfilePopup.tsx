@@ -2,6 +2,7 @@ import {Unstable_Popup as BasePopup} from "@mui/base/Unstable_Popup";
 import {Button, styled} from "@mui/material";
 import {useAuth} from "../../hooks/useAuth.ts";
 import {useNavigate} from "react-router-dom";
+import { useChat } from "../../hooks/useChat.ts";
 
 type ProfilePopupProps = {
     open: boolean,
@@ -12,11 +13,14 @@ function ProfilePopup({open, anchor}: ProfilePopupProps) {
 
     const {username, logout} = useAuth()
 
+    const {exit} = useChat()
+
     const navigate = useNavigate()
 
     const handleLogout = () => {
         logout()
         navigate("/")
+        exit()
     }
 
     return (

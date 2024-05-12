@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {addMessage} from "../store/chatSlice.ts";
+import {addMessage, cleanMessages} from "../store/chatSlice.ts";
 import {useAuth} from "./useAuth.ts";
 import {createUUID} from "../utils/utils.ts";
 
@@ -26,23 +26,22 @@ export function useChat() {
             user: data.username,
             time: new Date(Number(data.send_time)).toString(),
             content: data.message,
-            error: data.error
+            error: data.error,
+            id: createUUID()
         }
 
         console.log(message)
 
-        dispatch(addMessage({
-            self: data.username == username,
-            user: data.username,
-            time: new Date(Number(data.send_time)).toString(),
-            content: data.message,
-            error: data.error,
-            id: createUUID()
-        }))
+        dispatch(addMessage(message))
+    }
+
+    const exit = () => {
+        dispatch(cleanMessages())
     }
 
     return {
         messages,
-        newMessage
+        newMessage,
+        exit
     }
 }
