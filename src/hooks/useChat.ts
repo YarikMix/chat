@@ -4,9 +4,9 @@ import {useAuth} from "./useAuth.ts";
 import {createUUID} from "../utils/utils.ts";
 
 type ChatMessage = {
-    username: string,
+    user: string,
     message: string,
-    send_time: string,
+    time: string,
     error: boolean
 }
 
@@ -21,12 +21,18 @@ export function useChat() {
     const newMessage = (data:ChatMessage) => {
         console.log("newMessage")
 
+        const self = data.user == username
+
+        if (data.error && self) {
+            return
+        }
+
         const message = {
-            self: data.username == username,
-            user: data.username,
-            time: new Date(Number(data.send_time)).toString(),
+            self: data.user == username,
+            user: data.user,
+            time: new Date(Number(data.time)).toString(),
             content: data.message,
-            error: data.error,
+            error: self ? false : data.error,
             id: createUUID()
         }
 

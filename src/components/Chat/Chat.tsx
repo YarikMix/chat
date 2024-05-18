@@ -8,12 +8,14 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import {FaRegSmile} from "react-icons/fa";
 import KeyboardVoiceOutlinedIcon from "@mui/icons-material/KeyboardVoiceOutlined";
 import {useChat} from "../../hooks/useChat.ts";
-import {FormEvent, useRef, useState} from "react";
-import useWebSocket from "react-use-websocket";
-import Ajv from "ajv";
+import {FormEvent, useEffect, useRef, useState} from "react";
 import {useAuth} from "../../hooks/useAuth.ts";
 import {MdError} from "react-icons/md";
 import "./Chat.sass"
+import io from 'socket.io-client'
+
+const SERVER_PORT = 4000
+const SERVER_URL = 'http://localhost:' + SERVER_PORT
 
 const Chat = () => {
     const {username} = useAuth()
@@ -24,53 +26,38 @@ const Chat = () => {
 
     const [message, setMessage] = useState("")
 
-    const { sendMessage } = useWebSocket("ws://localhost:8000/ws/socket-server/", {
-        onMessage: (message) => {
-            console.log("onMessage");
+    const socketRef = useRef(null)
+
+    useEffect(() => {
+        socketRef.current = io(SERVER_URL)
+
+        // отправляем событие добавления пользователя,
+        // в качестве данных передаем объект с именем и id пользователя
+        socketRef.current.emit('user:add', { username })
+
+        // отправляем запрос на получение сообщений
+        socketRef.current.emit('message:get')
+
+        // обрабатываем получение сообщений
+        socketRef.current.on('message', (message) => {
+            console.log("on message")
             console.log(message)
-            console.log(message.data)
-            const data = JSON.parse(message.data)
-            console.log(data)
-            if (data.type == "chat") {
-                const ajv = new Ajv();
 
-                const messageSchema = {
-                    type: "object",
-                    properties: {
-                        message: {
-                            type: "string"
-                        },
-                        send_time: {
-                            type: "string"
-                        },
-                        username: {
-                            type: "string"
-                        },
-                        error: {
-                            type: "boolean"
-                        }
-                    },
-                    required: [
-                        "username",
-                        "message",
-                        "send_time",
-                        "error"
-                    ],
-                };
+            newMessage(message)
+            setTimeout(() => scrollToBottom(), 100)
+        })
 
-                const isDataValid = ajv.validate(messageSchema, data.data)
-                console.log(isDataValid)
-                if (isDataValid) {
-                    newMessage(data.data)
-                    setTimeout(() => scrollToBottom(), 100)
-                    return
-                }
-            }
-        },
-        onOpen: () => {
-            console.log("websocket connection open")
+        return () => {
+            // при размонтировании компонента выполняем отключение сокета
+            socketRef.current.disconnect()
         }
-    });
+    }, []);
+
+    const sendMessage = (message) => {
+        console.log("sendMessage")
+        // добавляем в объект id пользователя при отправке на сервер
+        socketRef.current.emit('message', message)
+    }
 
     const handleSubmit = (e:FormEvent) => {
         e.preventDefault()
