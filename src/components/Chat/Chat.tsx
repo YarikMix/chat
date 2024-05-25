@@ -74,7 +74,7 @@ const Chat = () => {
             "message": message.replace(/['"]+/g, '')
         }))
 
-        setTimeout(() => scrollToBottom(), 100)
+        // setTimeout(() => scrollToBottom(), 100)
     }
 
     const scrollToBottom = () => {
